@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserResourceFull;
+use App\Http\Responses\ApiResponse;
+use App\Models\User;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -41,9 +47,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return [
-            'name' => 'Tommy'
-        ];
+        try {
+            return ApiResponse::success('Success', 200, UserResource::collection(User::all()));
+        } catch (Exception $e) {
+            return ApiResponse::error('An error ocurred while trying to get the users: ' .  $e->getMessage(), 500);
+        }
     }
 
     /**
@@ -73,9 +81,14 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            return ApiResponse::success('Success', 200, new UserResourceFull($user));
+        } catch (ModelNotFoundException $e) {
+            return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
+        }
     }
 
     /**
@@ -142,9 +155,18 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->update($request->all());
+
+            return ApiResponse::success('Success', 200, new UserResourceFull($user));
+        } catch (ModelNotFoundException $e) {
+            return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
+        } catch (Exception $e) {
+            return ApiResponse::error('Error: ' . $e->getMessage(), 422);
+        } 
     }
 
     /**
@@ -164,8 +186,17 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            return ApiResponse::success('The user has been successfully deleted', 200);
+        } catch (ModelNotFoundException $e) {
+            return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
+        } catch (Exception $e) {
+            return ApiResponse::error('Error: ' . $e->getMessage(), 422);
+        } 
     }
 }
