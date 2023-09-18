@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\User;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -155,19 +157,9 @@ class AuthController extends Controller
      *      )
      * )
      */
-    public function register(Request $request)
+    public function register(StoreUserRequest $request)
     {
         try {
-            $request->validate([
-                'first_name' => ['required', 'string'],
-                'last_name' => ['required', 'string'],
-                'username' => ['required', 'string', 'unique:users,username'],  
-                'telephone' => ['string'],                
-                'age' => ['required', 'integer'],              
-                'email' => ['required', 'email', 'unique:users,email'],
-                'password' => ['required', 'string', 'min:6']
-            ]);
-
             $user = User::create(array_merge(
                 $request->all(),
                 ['password' => Hash::make($request->password, [
@@ -176,8 +168,8 @@ class AuthController extends Controller
             ));
 
             return ApiResponse::success('The user has been successfully created', 200, new UserResource($user));
-        } catch (Exception $e) {
-            return ApiResponse::error('Error: ' . $e->getMessage(), 422);
+        } catch (ValidationException $e) {
+            return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         } 
     }
 

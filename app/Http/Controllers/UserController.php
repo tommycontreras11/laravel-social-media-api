@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceFull;
 use App\Http\Responses\ApiResponse;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -111,7 +113,7 @@ class UserController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(
      *                      type="object",
-     *                      @OA\Property(
+*                      @OA\Property(
      *                          property="username",
      *                          type="string"
      *                      ),
@@ -124,20 +126,30 @@ class UserController extends Controller
      *                          type="string"
      *                      ),
      *                      @OA\Property(
+     *                          property="email",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
      *                          property="telephone",
      *                          type="string"
      *                      ),
      *                      @OA\Property(
      *                          property="age",
      *                          type="number"
-     *                      )
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="string"
+     *                      ),
      *                 ),
      *                 example={
-     *                     "username":"Tommy 11",
      *                     "first_name":"Tommy",
      *                     "last_name":"Grullón Contreras",
+     *                     "username":"Tommy11",
+     *                     "email":"tommy@gmail.com",
      *                     "telephone":"829-754-6150",
-     *                     "age":20
+     *                     "age":20,
+     *                     "password":"Hola1234"
      *                }
      *             )
      *         )
@@ -147,18 +159,20 @@ class UserController extends Controller
      *          description="CREATED",
      *          @OA\JsonContent(
      *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="username", type="string", example="Tommy 11"),
      *              @OA\Property(property="first_name", type="string", example="Tommy"),
      *              @OA\Property(property="last_name", type="string", example="Grullón Contreras"),
+     *              @OA\Property(property="username", type="string", example="Tommy11"),
+     *              @OA\Property(property="email", type="string", example="tommy@gmail.com"),
      *              @OA\Property(property="telephone", type="string", example="829-754-6150"),
      *              @OA\Property(property="age", type="number", example=20),
+     *              @OA\Property(property="password", type="string", example="Hola1234"),
      *              @OA\Property(property="created_at", type="string", example="2023-02-23T00:09:16.000000Z"),
      *              @OA\Property(property="updated_at", type="string", example="2023-02-23T12:33:45.000000Z")
      *          )
      *      )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         try {
             $user = User::findOrFail($id);
@@ -167,8 +181,8 @@ class UserController extends Controller
             return ApiResponse::success('Success', 200, new UserResourceFull($user));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
-        } catch (Exception $e) {
-            return ApiResponse::error('Error: ' . $e->getMessage(), 422);
+        } catch (ValidationException $e) {
+            return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         } 
     }
 

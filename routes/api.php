@@ -26,4 +26,6 @@ Route::group(['middleware' => 'auth:api', 'verified'], function() {
 
     //User
     Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::patch('/users/{id}', [UserController::class, 'update']);
 });

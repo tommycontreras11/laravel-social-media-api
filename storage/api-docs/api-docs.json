@@ -411,11 +411,17 @@
                                             "last_name": {
                                                 "type": "string"
                                             },
+                                            "email": {
+                                                "type": "string"
+                                            },
                                             "telephone": {
                                                 "type": "string"
                                             },
                                             "age": {
                                                 "type": "number"
+                                            },
+                                            "password": {
+                                                "type": "string"
                                             }
                                         },
                                         "type": "object"
@@ -423,11 +429,13 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "username": "Tommy 11",
                                     "first_name": "Tommy",
                                     "last_name": "Grullón Contreras",
+                                    "username": "Tommy11",
+                                    "email": "tommy@gmail.com",
                                     "telephone": "829-754-6150",
-                                    "age": 20
+                                    "age": 20,
+                                    "password": "Hola1234"
                                 }
                             }
                         }
@@ -444,10 +452,6 @@
                                             "type": "number",
                                             "example": 1
                                         },
-                                        "username": {
-                                            "type": "string",
-                                            "example": "Tommy 11"
-                                        },
                                         "first_name": {
                                             "type": "string",
                                             "example": "Tommy"
@@ -456,6 +460,14 @@
                                             "type": "string",
                                             "example": "Grullón Contreras"
                                         },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "Tommy11"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "tommy@gmail.com"
+                                        },
                                         "telephone": {
                                             "type": "string",
                                             "example": "829-754-6150"
@@ -463,6 +475,10 @@
                                         "age": {
                                             "type": "number",
                                             "example": 20
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "example": "Hola1234"
                                         },
                                         "created_at": {
                                             "type": "string",
