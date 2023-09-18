@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('telephone');
             $table->integer('age');
             $table->string('email', 50)->unique();
-            $table->string('password', 32)->min(6);
+            $table->string('password', 70)->min(6);
             $table->timestamps();
         });
     }
