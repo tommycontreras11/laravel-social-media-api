@@ -18,6 +18,10 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $password = Hash::make('test1234', [
+            'rounds' => 6
+        ]);
+
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
@@ -25,7 +29,7 @@ class UserFactory extends Factory
             'telephone' => fake()->phoneNumber(),
             'age' => fake()->randomDigit(18, 100),
             'email' => fake()->unique()->safeEmail(),
-            'password' => Hash::make(Str::random(10)), 
+            'password' => $password 
         ];
     }
 }

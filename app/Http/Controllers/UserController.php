@@ -18,6 +18,7 @@ class UserController extends Controller
      * @OA\Get (
      *     path="/api/users",
      *     tags={"User"},
+     *     security={{"token": {}}},
      *     summary="Get list of users",
      *     description="Return list of users",
      *     @OA\Response(
@@ -59,6 +60,7 @@ class UserController extends Controller
      * @OA\Get (
      *     path="/api/users/{id}",
      *     tags={"User"},
+     *     security={{"token": {}}},
      *     @OA\Parameter(
      *         in="path",
      *         name="id",
@@ -96,6 +98,7 @@ class UserController extends Controller
      * @OA\Patch (
      *     path="/api/users/{id}",
      *     tags={"User"},
+     *     security={{"token": {}}},
      *     @OA\Parameter(
      *         in="path",
      *         name="id",
@@ -174,6 +177,7 @@ class UserController extends Controller
      * @OA\Delete (
      *     path="/api/users/{id}",
      *     tags={"User"},
+     *     security={{"token": {}}},
      *     @OA\Parameter(
      *         in="path",
      *         name="id",
