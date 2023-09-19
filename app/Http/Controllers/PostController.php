@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\PostResourceFull;
 use App\Http\Responses\ApiResponse;
@@ -89,17 +91,24 @@ class PostController extends Controller
      *      @OA\Response(
      *          response=201,
      *          description="CREATED",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="title", type="string", example="This is the new post"),
+     *              @OA\Property(property="content", type="string", example="This is the content of the new post"),
+     *              @OA\Property(property="created_at", type="string", example="2023-02-23T00:09:16.000000Z"),
+     *              @OA\Property(property="updated_at", type="string", example="2023-02-23T12:33:45.000000Z")
+     *          )
      *      )
      * )
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         try {
             $post = Post::create(array_merge($request->all(), [
                 'user_id' => auth()->user()->id
             ]));
 
-            return ApiResponse::success('The post has been successfully created', 200, new PostResource($post));
+            return ApiResponse::success('The post has been successfully created', 200, $post);
         } catch (ValidationException $e) {
             return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         }
@@ -169,12 +178,19 @@ class PostController extends Controller
      *         )
      *      ),
      *      @OA\Response(
-     *          response=200,
+     *          response=201,
      *          description="CREATED",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="title", type="string", example="This is the new post"),
+     *              @OA\Property(property="content", type="string", example="This is the content of the new post"),
+     *              @OA\Property(property="created_at", type="string", example="2023-02-23T00:09:16.000000Z"),
+     *              @OA\Property(property="updated_at", type="string", example="2023-02-23T12:33:45.000000Z")
+     *          )
      *      )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
         try {
             $post = Post::findOrFail($id);

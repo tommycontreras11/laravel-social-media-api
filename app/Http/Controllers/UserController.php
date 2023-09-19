@@ -103,7 +103,7 @@ class UserController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(
      *                      type="object",
-*                      @OA\Property(
+     *                      @OA\Property(
      *                          property="username",
      *                          type="string"
      *                      ),
@@ -145,8 +145,19 @@ class UserController extends Controller
      *         )
      *      ),
      *      @OA\Response(
-     *          response=200,
+     *          response=201,
      *          description="CREATED",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="id", type="number", example=1),
+     *              @OA\Property(property="username", type="string", example="Tommy 11"),
+     *              @OA\Property(property="first_name", type="string", example="Tommy"),
+     *              @OA\Property(property="last_name", type="string", example="Grullón Contreras"),
+     *              @OA\Property(property="telephone", type="string", example="829-754-6150"),
+     *              @OA\Property(property="age", type="number", example=20),
+     *              @OA\Property(property="password", type="number", example=20),
+     *              @OA\Property(property="created_at", type="string", example="2023-02-23T00:09:16.000000Z"),
+     *              @OA\Property(property="updated_at", type="string", example="2023-02-23T12:33:45.000000Z")
+     *          )
      *      )
      * )
      */

@@ -126,7 +126,52 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "CREATED"
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "Tommy 11"
+                                        },
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Tommy"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Grullón Contreras"
+                                        },
+                                        "telephone": {
+                                            "type": "string",
+                                            "example": "829-754-6150"
+                                        },
+                                        "age": {
+                                            "type": "number",
+                                            "example": 20
+                                        },
+                                        "password": {
+                                            "type": "number",
+                                            "example": 20
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -267,7 +312,36 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "CREATED"
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "This is the new post"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "example": "This is the content of the new post"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -375,8 +449,37 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "CREATED"
+                    "201": {
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "This is the new post"
+                                        },
+                                        "content": {
+                                            "type": "string",
+                                            "example": "This is the content of the new post"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -539,8 +642,53 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "CREATED"
+                    "201": {
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "username": {
+                                            "type": "string",
+                                            "example": "Tommy 11"
+                                        },
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "Tommy"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Grullón Contreras"
+                                        },
+                                        "telephone": {
+                                            "type": "string",
+                                            "example": "829-754-6150"
+                                        },
+                                        "age": {
+                                            "type": "number",
+                                            "example": 20
+                                        },
+                                        "password": {
+                                            "type": "number",
+                                            "example": 20
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
