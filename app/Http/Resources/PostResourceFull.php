@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResourceFull extends JsonResource
+class PostResourceFull extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,9 @@ class UserResourceFull extends JsonResource
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'username' => $this->username,
-            'email' => $this->email,
-            'posts' => PostResource::collection($this->posts)
+            'title' => $this->title,
+            'content' => $this->content,
+            'user' => new UserResource($this->user)
         ];
     }
 }

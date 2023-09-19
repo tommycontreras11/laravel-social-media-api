@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
+use App\Http\Resources\PostResourceFull;
 use App\Http\Responses\ApiResponse;
 use App\Models\Post;
 use Exception;
@@ -12,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
-/**
+    /**
      * Show all posts
      * @OA\Get (
      *     path="/api/posts",
@@ -50,7 +52,7 @@ class PostController extends Controller
         try {
             $posts = Post::all();
             
-            return ApiResponse::success('Success', 200, $posts);
+            return ApiResponse::success('Success', 200, PostResource::collection($posts));
         } catch (Exception $e) {
             return ApiResponse::error('An error ocurred while trying to get the posts: ' . $e->getMessage(), 500);
         }
@@ -97,7 +99,7 @@ class PostController extends Controller
                 'user_id' => auth()->user()->id
             ]));
 
-            return ApiResponse::success('The post has been successfully created', 200, $post);
+            return ApiResponse::success('The post has been successfully created', 200, new PostResource($post));
         } catch (ValidationException $e) {
             return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         }
@@ -121,18 +123,18 @@ class PostController extends Controller
      *     )
      * )
      */
-    public function show(string $id)
+    public function show($id)
     {
         try {
-            $post = Post::findOrFail($id);
+            $post = Post::with(['user'])->findOrFail($id);
 
-            return ApiResponse::success('Success', 200, $post);
+            return ApiResponse::success('Success', 200, new PostResourceFull($post));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
         }
     }
 
-/**
+    /**
      * Update post information
      * @OA\Patch (
      *     path="/api/posts/{id}",
@@ -150,7 +152,7 @@ class PostController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(
      *                      type="object",
-*                           @OA\Property(
+     *                      @OA\Property(
      *                          property="title",
      *                          type="string"
      *                      ),
@@ -178,7 +180,7 @@ class PostController extends Controller
             $post = Post::findOrFail($id);
             $post->update($request->all());
 
-            return ApiResponse::success('The post has been successfully updated', 200, $post);
+            return ApiResponse::success('The post has been successfully updated', 200, new PostResource($post));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
         } catch (ValidationException $e) {
