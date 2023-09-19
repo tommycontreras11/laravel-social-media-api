@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\UserResourceFull;
 use App\Http\Responses\ApiResponse;
-use App\Models\User;
+use App\Models\Post;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class UserController extends Controller
+class PostController extends Controller
 {
-    /**
-     * Show all users
+/**
+     * Show all posts
      * @OA\Get (
-     *     path="/api/users",
-     *     tags={"User"},
+     *     path="/api/posts",
+     *     tags={"Post"},
      *     security={{"token": {}}},
-     *     summary="Get list of users",
-     *     description="Return list of users",
+     *     summary="Get list of posts",
+     *     description="Return list of posts",
      *     @OA\Response(
      *          response=200,
      *          description="Successful operation",
@@ -51,17 +48,66 @@ class UserController extends Controller
     public function index()
     {
         try {
-            return ApiResponse::success('Success', 200, UserResource::collection(User::all()));
+            $posts = Post::all();
+            
+            return ApiResponse::success('Success', 200, $posts);
         } catch (Exception $e) {
-            return ApiResponse::error('An error ocurred while trying to get the users: ' .  $e->getMessage(), 500);
+            return ApiResponse::error('An error ocurred while trying to get the posts: ' . $e->getMessage(), 500);
         }
     }
 
     /**
-     * Show user information
+     * Create a new post
+     * @OA\Post (
+     *     path="/api/posts",
+     *     tags={"Post"},
+     *     security={{"token": {}}},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="title",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="content",
+     *                          type="string"
+     *                      ),
+     *                 ),
+     *                 example={
+     *                     "title":"This is the new post",
+     *                     "content":"This is the content of the new post"
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="CREATED",
+     *      )
+     * )
+     */
+    public function store(Request $request)
+    {
+        try {
+            $post = Post::create(array_merge($request->all(), [
+                'user_id' => auth()->user()->id
+            ]));
+
+            return ApiResponse::success('The post has been successfully created', 200, $post);
+        } catch (ValidationException $e) {
+            return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
+        }
+    }
+
+    /**
+     * Show post information
      * @OA\Get (
-     *     path="/api/users/{id}",
-     *     tags={"User"},
+     *     path="/api/posts/{id}",
+     *     tags={"Post"},
      *     security={{"token": {}}},
      *     @OA\Parameter(
      *         in="path",
@@ -75,21 +121,22 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function show($id)
+    public function show(string $id)
     {
         try {
-            $user = User::findOrFail($id);
-            return ApiResponse::success('Success', 200, new UserResourceFull($user));
+            $post = Post::findOrFail($id);
+
+            return ApiResponse::success('Success', 200, $post);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
         }
     }
 
-    /**
-     * Update user information
+/**
+     * Update post information
      * @OA\Patch (
-     *     path="/api/users/{id}",
-     *     tags={"User"},
+     *     path="/api/posts/{id}",
+     *     tags={"Post"},
      *     security={{"token": {}}},
      *     @OA\Parameter(
      *         in="path",
@@ -103,43 +150,18 @@ class UserController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(
      *                      type="object",
-*                      @OA\Property(
-     *                          property="username",
+*                           @OA\Property(
+     *                          property="title",
      *                          type="string"
      *                      ),
      *                      @OA\Property(
-     *                          property="first_name",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="last_name",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="email",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="telephone",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="age",
-     *                          type="number"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="password",
+     *                          property="content",
      *                          type="string"
      *                      ),
      *                 ),
      *                 example={
-     *                     "first_name":"Tommy",
-     *                     "last_name":"Grullón Contreras",
-     *                     "username":"Tommy11",
-     *                     "email":"tommy@gmail.com",
-     *                     "telephone":"829-754-6150",
-     *                     "age":20,
-     *                     "password":"Hola1234"
+     *                     "title":"This is the new post",
+     *                     "content":"This is the content of the new post"
      *                }
      *             )
      *         )
@@ -150,25 +172,25 @@ class UserController extends Controller
      *      )
      * )
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-            $user = User::findOrFail($id);
-            $user->update($request->all());
+            $post = Post::findOrFail($id);
+            $post->update($request->all());
 
-            return ApiResponse::success('Success', 200, new UserResourceFull($user));
+            return ApiResponse::success('The post has been successfully updated', 200, $post);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
         } catch (ValidationException $e) {
             return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
-        } 
+        }
     }
 
     /**
-     * Delete user information
+     * Delete post information
      * @OA\Delete (
-     *     path="/api/users/{id}",
-     *     tags={"User"},
+     *     path="/api/posts/{id}",
+     *     tags={"Post"},
      *     security={{"token": {}}},
      *     @OA\Parameter(
      *         in="path",
@@ -185,14 +207,12 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
-            $user = User::findOrFail($id);
-            $user->delete();
+            $post = Post::findOrFail($id);
+            $post->delete();
 
-            return ApiResponse::success('The user has been successfully deleted', 200);
+            return ApiResponse::success('The post has been successfully deleted', 200);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
-        } catch (Exception $e) {
-            return ApiResponse::error('Error: ' . $e->getMessage(), 422);
-        } 
+        }
     }
 }

@@ -126,56 +126,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "CREATED",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "first_name": {
-                                            "type": "string",
-                                            "example": "Tommy"
-                                        },
-                                        "last_name": {
-                                            "type": "string",
-                                            "example": "Grullón Contreras"
-                                        },
-                                        "username": {
-                                            "type": "string",
-                                            "example": "Tommy11"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "tommy@gmail.com"
-                                        },
-                                        "telephone": {
-                                            "type": "string",
-                                            "example": "829-754-6150"
-                                        },
-                                        "age": {
-                                            "type": "number",
-                                            "example": 20
-                                        },
-                                        "password": {
-                                            "type": "string",
-                                            "example": "Hola1234"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2023-02-23T00:09:16.000000Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2023-02-23T12:33:45.000000Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "CREATED"
                     }
                 }
             }
@@ -248,6 +199,193 @@
                 ]
             }
         },
+        "/api/posts": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Get list of posts",
+                "description": "Return list of posts",
+                "operationId": "e9eaf7df702a94f4443677bd1a36cfe6",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Create a new post",
+                "operationId": "4a657e51a0066c64781851f2fd2651e2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "content": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "title": "This is the new post",
+                                    "content": "This is the content of the new post"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/api/posts/{id}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Show post information",
+                "operationId": "b0f9d92879218f68a376b6edc6467c67",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Delete post information",
+                "operationId": "fad1726bd24cd459fc1525b67985df39",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "NO CONTENT"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Update post information",
+                "operationId": "bd0f2d7a9af7f3cc0f455045c2b8750e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "content": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "title": "This is the new post",
+                                    "content": "This is the content of the new post"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "CREATED"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -302,48 +440,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "username": {
-                                            "type": "string",
-                                            "example": "Tommy 11"
-                                        },
-                                        "first_name": {
-                                            "type": "string",
-                                            "example": "Tommy"
-                                        },
-                                        "last_name": {
-                                            "type": "string",
-                                            "example": "Grullón Contreras"
-                                        },
-                                        "telephone": {
-                                            "type": "string",
-                                            "example": "829-754-6150"
-                                        },
-                                        "age": {
-                                            "type": "integer",
-                                            "example": "20"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2023-02-23T00:09:16.000000Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2023-02-23T12:33:45.000000Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "OK"
                     }
                 },
                 "security": [
@@ -443,56 +540,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "CREATED",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "number",
-                                            "example": 1
-                                        },
-                                        "first_name": {
-                                            "type": "string",
-                                            "example": "Tommy"
-                                        },
-                                        "last_name": {
-                                            "type": "string",
-                                            "example": "Grullón Contreras"
-                                        },
-                                        "username": {
-                                            "type": "string",
-                                            "example": "Tommy11"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "tommy@gmail.com"
-                                        },
-                                        "telephone": {
-                                            "type": "string",
-                                            "example": "829-754-6150"
-                                        },
-                                        "age": {
-                                            "type": "number",
-                                            "example": 20
-                                        },
-                                        "password": {
-                                            "type": "string",
-                                            "example": "Hola1234"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "example": "2023-02-23T00:09:16.000000Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "example": "2023-02-23T12:33:45.000000Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "CREATED"
                     }
                 },
                 "security": [

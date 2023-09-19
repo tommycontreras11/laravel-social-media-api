@@ -10,7 +10,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Exception;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -142,18 +141,6 @@ class AuthController extends Controller
      *      @OA\Response(
      *          response=201,
      *          description="CREATED",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="first_name", type="string", example="Tommy"),
-     *              @OA\Property(property="last_name", type="string", example="Grullón Contreras"),
-     *              @OA\Property(property="username", type="string", example="Tommy11"),
-     *              @OA\Property(property="email", type="string", example="tommy@gmail.com"),
-     *              @OA\Property(property="telephone", type="string", example="829-754-6150"),
-     *              @OA\Property(property="age", type="number", example=20),
-     *              @OA\Property(property="password", type="string", example="Hola1234"),
-     *              @OA\Property(property="created_at", type="string", example="2023-02-23T00:09:16.000000Z"),
-     *              @OA\Property(property="updated_at", type="string", example="2023-02-23T12:33:45.000000Z")
-     *          )
      *      )
      * )
      */
