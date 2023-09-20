@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostCommentRequest;
+use App\Http\Requests\UpdatePostCommentRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\PostComment;
 use Dotenv\Exception\ValidationException;
@@ -103,7 +105,7 @@ class PostCommentController extends Controller
      *      )
      * )
      */
-    public function store(Request $request)
+    public function store(StorePostCommentRequest $request)
     {
         try {
             $post_comment = PostComment::create($request->all());
@@ -196,7 +198,7 @@ class PostCommentController extends Controller
      *      )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostCommentRequest $request, $id)
     {
         try {
             $post_comment = PostComment::findOrFail($id);
