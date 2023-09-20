@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostCommentRequest;
 use App\Http\Requests\UpdatePostCommentRequest;
+use App\Http\Resources\PostCommentResource;
+use App\Http\Resources\PostCommentResourceFull;
 use App\Http\Responses\ApiResponse;
 use App\Models\PostComment;
 use Dotenv\Exception\ValidationException;
@@ -52,7 +54,7 @@ class PostCommentController extends Controller
         try {
             $post_comments = PostComment::all();
 
-            return ApiResponse::success('Success', 200, $post_comments);
+            return ApiResponse::success('Success', 200, PostCommentResource::collection($post_comments));
         } catch (Exception $e) {
             return ApiResponse::error('An error ocurred while trying to get the post comments: ' . $e->getMessage(), 500);
         }
@@ -110,7 +112,7 @@ class PostCommentController extends Controller
         try {
             $post_comment = PostComment::create($request->all());
             
-            return ApiResponse::success('The comment has been successfully created', 200, $post_comment);
+            return ApiResponse::success('The comment has been successfully created', 200, new PostCommentResource($post_comment));
         } catch (ValidationException $e) {
             return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         }
@@ -139,7 +141,7 @@ class PostCommentController extends Controller
         try {
             $post_comment = PostComment::findOrFail($id);
 
-            return ApiResponse::success('Success', 200, $post_comment);
+            return ApiResponse::success('Success', 200, new PostCommentResourceFull($post_comment));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the comments: ' .  $e->getMessage(), 404);
         }
@@ -204,7 +206,7 @@ class PostCommentController extends Controller
             $post_comment = PostComment::findOrFail($id);
             $post_comment->update($request->all());
 
-            return ApiResponse::success('The comment has been successfully updated', 200, $post_comment);
+            return ApiResponse::success('The comment has been successfully updated', 200, new PostCommentResourceFull($post_comment));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the comments: ' .  $e->getMessage(), 404);
         }
