@@ -244,6 +244,267 @@
                 ]
             }
         },
+        "/api/comments": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Get list of comments",
+                "description": "Return list of comments",
+                "operationId": "0406f270b674fae17bf23b4206a3004f",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Create a new comment",
+                "operationId": "300619a0a4003920aafe960e45688102",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "user_id": {
+                                                "type": "number"
+                                            },
+                                            "post_id": {
+                                                "type": "number"
+                                            },
+                                            "comment": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "user_id": "1",
+                                    "post_id": "1",
+                                    "comment": "This is the new comment"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "post_id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "comment": {
+                                            "type": "string",
+                                            "example": "This is the new comment"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/api/comments/{id}": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Show comment information",
+                "operationId": "ca005bcffa22ab29b155dd7aa13b5d6e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Delete comment information",
+                "operationId": "721e5dc0c32ef81276203df965767606",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "NO CONTENT"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "Update comment information",
+                "operationId": "72662dbf25ada3576716d604b7189607",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "user_id": {
+                                                "type": "number"
+                                            },
+                                            "post_id": {
+                                                "type": "number"
+                                            },
+                                            "comment": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "user_id": "1",
+                                    "post_id": "1",
+                                    "comment": "This is the new comment"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "post_id": {
+                                            "type": "number",
+                                            "example": "1"
+                                        },
+                                        "comment": {
+                                            "type": "string",
+                                            "example": "This is the new comment"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T00:09:16.000000Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-02-23T12:33:45.000000Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/api/posts": {
             "get": {
                 "tags": [

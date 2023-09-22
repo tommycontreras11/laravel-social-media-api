@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -37,4 +38,11 @@ Route::group(['middleware' => 'auth:api', 'verified'], function() {
     Route::post('/posts', [PostController::class, 'store']);
     Route::patch('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+    //Comment
+    Route::get('/comments', [CommentController::class, 'index']);
+    Route::get('/comments/{id}', [CommentController::class, 'show']);
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::patch('/comments/{id}', [CommentController::class, 'update']);
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 });
