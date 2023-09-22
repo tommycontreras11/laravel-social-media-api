@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Comment;
 use Exception;
@@ -103,7 +105,7 @@ class CommentController extends Controller
      *      )
      * )
      */
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request)
     {
         try {
             $comment = Comment::create($request->all());
@@ -196,7 +198,7 @@ class CommentController extends Controller
      *      )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCommentRequest $request, $id)
     {
         try {
             $comment = Comment::findOrFail($id);
