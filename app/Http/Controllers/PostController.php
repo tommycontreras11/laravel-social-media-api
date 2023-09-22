@@ -12,6 +12,7 @@ use App\Models\Post;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
@@ -136,8 +137,15 @@ class PostController extends Controller
     {
         try {
             $post = Post::with(['user', 'comments'])->findOrFail($id);;
+            $response = Gate::inspect('view', $post);
 
-            return ApiResponse::success('Success', 200, new PostResourceFull($post));
+            if($response->allowed()) 
+            {
+                return ApiResponse::success('Success', 200, new PostResourceFull($post));                
+            }else{
+                echo $response->message();
+            }
+
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user: ' .  $e->getMessage(), 404);
         } 
