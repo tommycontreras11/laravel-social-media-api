@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function target_friends(): HasMany 
+    {
+        return $this->hasMany(User::class);
+    }
 }
