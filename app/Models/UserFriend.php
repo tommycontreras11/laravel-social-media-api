@@ -16,6 +16,11 @@ class UserFriend extends Model
 
     public function source_friend(): BelongsTo 
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'source_id');
+    }
+
+    public function target_friend(): BelongsTo 
+    {
+        return $this->belongsTo(User::class, 'target_id');
     }
 }
