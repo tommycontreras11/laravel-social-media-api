@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserFriendRequest;
+use App\Http\Requests\UpdateUserFriendRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\UserFriend;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class UserFriendController extends Controller
 {
@@ -96,7 +99,7 @@ class UserFriendController extends Controller
      *      )
      * )
      */
-    public function store(Request $request)
+    public function store(StoreUserFriendRequest $request)
     {
         try {
             $user_friend = UserFriend::create(array_merge($request->all(), [
@@ -107,6 +110,8 @@ class UserFriendController extends Controller
             return ApiResponse::success('Friend request sent', 200, $user_friend);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the target id: ' . $e->getMessage(), 404);
+        } catch (ValidationException $e) {
+            return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         }
     }
 
@@ -186,7 +191,7 @@ class UserFriendController extends Controller
      *      )
      * )
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserFriendRequest $request, $id)
     {
         try {
             $user_friend = UserFriend::findOrFail($id);
@@ -199,6 +204,8 @@ class UserFriendController extends Controller
             return ApiResponse::success('The user friend has been successfully updated', 200, $user_friend);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user friend: ' . $e->getMessage(), 404);
+        } catch (ValidationException $e) {
+            return ApiResponse::error('Validation errors: ' . $e->getMessage(), 422);
         }
     }
     
