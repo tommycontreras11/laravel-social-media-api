@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserFriendController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,11 @@ Route::group(['middleware' => 'auth:api', 'verified'], function() {
     Route::post('/comments', [CommentController::class, 'store']);
     Route::patch('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+    //User Friend
+    Route::get('/user_friends', [UserFriendController::class, 'index']);
+    Route::get('/user_friends/{id}', [UserFriendController::class, 'show']);
+    Route::post('/user_friends', [UserFriendController::class, 'store']);
+    Route::patch('/user_friends/{id}', [UserFriendController::class, 'update']);
+    Route::delete('/user_friends/{id}', [UserFriendController::class, 'destroy']);
 });
