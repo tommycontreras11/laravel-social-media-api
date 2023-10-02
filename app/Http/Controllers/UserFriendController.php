@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserFriendRequest;
 use App\Http\Requests\UpdateUserFriendRequest;
+use App\Http\Resources\UserFriendResource;
+use App\Http\Resources\UserFriendResourceFull;
 use App\Http\Responses\ApiResponse;
 use App\Models\UserFriend;
 use Exception;
@@ -52,7 +54,7 @@ class UserFriendController extends Controller
         try {
             $user_friends = UserFriend::all();
 
-            return ApiResponse::success('Success', 200, $user_friends);
+            return ApiResponse::success('Success', 200, UserFriendResource::collection($user_friends));
         } catch (Exception $e) {
             return ApiResponse::error('An error ocurred while trying to get the user friends: ' . $e->getMessage(), 500);
         }
@@ -107,7 +109,7 @@ class UserFriendController extends Controller
                 'status' => 'New'
             ]));
 
-            return ApiResponse::success('Friend request sent', 200, $user_friend);
+            return ApiResponse::success('Friend request sent', 200, new UserFriendResource($user_friend));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the target id: ' . $e->getMessage(), 404);
         } catch (ValidationException $e) {
@@ -136,9 +138,9 @@ class UserFriendController extends Controller
     public function show($id)
     {
         try {
-            $user_friend = UserFriend::with(['source_friend'])->findOrFail($id);
-
-            return ApiResponse::success('Success', 200, $user_friend);
+            $user_friend = UserFriend::with(['source_friend', 'target_friend'])->findOrFail($id);
+            
+            return ApiResponse::success('Success', 200, new UserFriendResourceFull($user_friend));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user friends: ' . $e->getMessage(), 404);
         }
@@ -201,7 +203,7 @@ class UserFriendController extends Controller
                 'status' => 'New'
             ]));
             
-            return ApiResponse::success('The user friend has been successfully updated', 200, $user_friend);
+            return ApiResponse::success('The user friend has been successfully updated', 200, new UserFriendResource($user_friend));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::error('An error ocurred while trying to get the user friend: ' . $e->getMessage(), 404);
         } catch (ValidationException $e) {
